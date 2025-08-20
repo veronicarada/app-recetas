@@ -1,0 +1,2 @@
+--diseño de la base de datos -- DER, web // entregar la proxima clase 
+--crer la base de datos -- png word pdf, etc
