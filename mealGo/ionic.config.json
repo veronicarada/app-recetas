@@ -1,0 +1,7 @@
+{
+  "name": "mealGo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
