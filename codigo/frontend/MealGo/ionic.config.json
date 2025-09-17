@@ -1,7 +1,0 @@
-{
-  "name": "MealGo",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}
