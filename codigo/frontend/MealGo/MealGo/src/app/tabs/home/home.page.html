@@ -1,67 +1,62 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Hoy</ion-title>
-  </ion-toolbar>
+ <ion-toolbar>
+ <ion-title>Productos</ion-title>
+ </ion-toolbar>
 </ion-header>
-
 <ion-content class="ion-padding">
-
-  <!-- 🔹 Tarjeta principal -->
-  <ion-card class="summary-card">
-    <ion-card-content>
-
-      <div class="circle-stats">
-        <div class="mini-circle">
-          <h3>{{ totalConsumed }}</h3>
-          <p>Consumidas</p>
-        </div>
-        <div class="mini-circle highlight">
-          <h3>{{ totalRemaining }}</h3>
-          <p>Restantes</p>
-        </div>
-        <div class="mini-circle">
-          <h3>{{ totalBurned }}</h3>
-          <p>Quemadas</p>
-        </div>
-      </div>
-      
-
-      <!-- 🔹 Macronutrientes en una sola línea -->
-      <div class="macros-inline">
-        <div>
-          <p>Carbohidratos</p>
-          <small>{{ carbs.consumed }}/{{ carbs.target }} g</small>
-          <ion-progress-bar [value]="carbs.consumed / carbs.target"></ion-progress-bar>
-        </div>
-        <div>
-          <p>Proteínas</p>
-          <small>{{ protein.consumed }}/{{ protein.target }} g</small>
-          <ion-progress-bar color="success" [value]="protein.consumed / protein.target"></ion-progress-bar>
-        </div>
-        <div>
-          <p>Grasas</p>
-          <small>{{ fat.consumed }}/{{ fat.target }} g</small>
-          <ion-progress-bar color="warning" [value]="fat.consumed / fat.target"></ion-progress-bar>
-        </div>
-      </div>
-
-    </ion-card-content>
-  </ion-card>
-
-  <!-- 🔹 Lista de comidas -->
-  <ion-list>
-    <ion-item *ngFor="let meal of meals">
-      <ion-avatar slot="start">
-        <img [src]="'assets/img/' + meal.icon + '.png'" alt="{{ meal.type }}">
-      </ion-avatar>
-      <ion-label>
-        <h3>{{ meal.type }}</h3>
-        <p>{{ meal.consumed }} / {{ meal.target }} kcal</p>
-      </ion-label>
-      <ion-button fill="clear" slot="end" (click)="addMeal(meal.type)">
-        <ion-icon name="add-circle" color="primary"></ion-icon>
-      </ion-button>
-    </ion-item>
-  </ion-list>
-
+ <!-- Alta -->
+ <ion-card>
+ <ion-card-header>
+ <ion-card-title>Agregar Producto</ion-card-title>
+ </ion-card-header>
+ <ion-card-content>
+ <ion-item>
+ <ion-label position="floating">Nombre</ion-label>
+ <ion-input [(ngModel)]="nuevoProducto.nombre"></ion-input>
+ </ion-item>
+ <ion-item>
+ <ion-label position="floating">Precio</ion-label>
+ <ion-input type="number" [(ngModel)]="nuevoProducto.precio"></ion-input>
+ </ion-item>
+ <ion-item>
+ <ion-label position="floating">Stock</ion-label>
+ <ion-input type="number" [(ngModel)]="nuevoProducto.stock"></ion-input>
+ </ion-item>
+ <ion-button expand="full" (click)="agregarProducto()">Agregar</ion-button>
+ </ion-card-content>
+ </ion-card>
+ <!-- Edición -->
+   <ion-card *ngIf="editando">
+ <ion-card-header>
+ <ion-card-title>Editar Producto</ion-card-title>
+ </ion-card-header>
+ <ion-card-content>
+ <ion-item>
+ <ion-label position="floating">Nombre</ion-label>
+ <ion-input [(ngModel)]="productoEditando.nombre"></ion-input>
+ </ion-item>
+ <ion-item>
+ <ion-label position="floating">Precio</ion-label>
+ <ion-input type="number" [(ngModel)]="productoEditando.precio"></ioninput>
+ </ion-item>
+ <ion-item>
+ <ion-label position="floating">Stock</ion-label>
+ <ion-input type="number" [(ngModel)]="productoEditando.stock"></ion-input>
+ </ion-item>
+ <ion-button expand="full" (click)="guardarEdicion()">Guardar cambios</ionbutton>
+ </ion-card-content>
+ </ion-card>
+ <!-- Listado -->
+ <ion-list>
+ <ion-item *ngFor="let p of productos">
+ <ion-label>
+ <h2>{{ p.nombre }}</h2>
+ <p>Precio: ${{ p.precio }} - Stock: {{ p.stock }}</p>
+ </ion-label>
+ <ion-button fill="clear" color="primary"
+(click)="editarProducto(p)">Editar</ion-button>
+ <ion-button fill="clear" color="danger"
+(click)="eliminarProducto(p.id)">Eliminar</ion-button>
+ </ion-item>
+ </ion-list>
 </ion-content>
