@@ -1,6 +1,38 @@
-import { createClient } from '@supabase/supabase-js';
+// src/app/services/database.service.ts
+import { Injectable } from '@angular/core';
+import { supabase } from './supabase';
 
-const supabaseUrl = 'https://zhvgyibyxmttgnszntuh.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpodmd5aWJ5eG10dGduc3pudHVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUxMDk2NjYsImV4cCI6MjA3MDY4NTY2Nn0.WmGNu92M0udYKKxxzDN3udjgkSpzXcrueoOPqLsFPMM'; 
+@Injectable({ providedIn: 'root' })
+export class DatabaseService {
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+  // --------- CRUD genéricos ---------
+  async getAll(table: string) {
+    const { data, error } = await supabase.from(table).select('*');
+    if (error) throw error;
+    return data;
+  }
+
+  async insert(table: string, record: any) {
+    const { data, error } = await supabase.from(table).insert([record]).select();
+    if (error) throw error;
+    return data;
+  }
+
+  async update(table: string, id: number | string, record: any) {
+    const { data, error } = await supabase.from(table).update(record).eq('id', id).select();
+    if (error) throw error;
+    return data;
+  }
+
+  async remove(table: string, id: number | string) {
+    const { data, error } = await supabase.from(table).delete().eq('id', id).select();
+    if (error) throw error;
+    return data;
+  }
+
+  // --------- Ejemplo específico para productos ---------
+  async getProductos() { return this.getAll('productos'); }
+  async addProducto(prod: any) { return this.insert('productos', prod); }
+  async updateProducto(id: number, prod: any) { return this.update('productos', id, prod); }
+  async deleteProducto(id: number) { return this.remove('productos', id); }
+}
