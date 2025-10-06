@@ -1,62 +1,82 @@
 <ion-header>
- <ion-toolbar>
- <ion-title>Productos</ion-title>
- </ion-toolbar>
+  <ion-toolbar>
+    <ion-title>Productos</ion-title>
+  </ion-toolbar>
 </ion-header>
+
 <ion-content class="ion-padding">
- <!-- Alta -->
- <ion-card>
- <ion-card-header>
- <ion-card-title>Agregar Producto</ion-card-title>
- </ion-card-header>
- <ion-card-content>
- <ion-item>
- <ion-label position="floating">Nombre</ion-label>
- <ion-input [(ngModel)]="nuevoProducto.nombre"></ion-input>
- </ion-item>
- <ion-item>
- <ion-label position="floating">Precio</ion-label>
- <ion-input type="number" [(ngModel)]="nuevoProducto.precio"></ion-input>
- </ion-item>
- <ion-item>
- <ion-label position="floating">Stock</ion-label>
- <ion-input type="number" [(ngModel)]="nuevoProducto.stock"></ion-input>
- </ion-item>
- <ion-button expand="full" (click)="agregarProducto()">Agregar</ion-button>
- </ion-card-content>
- </ion-card>
- <!-- Edición -->
-   <ion-card *ngIf="editando">
- <ion-card-header>
- <ion-card-title>Editar Producto</ion-card-title>
- </ion-card-header>
- <ion-card-content>
- <ion-item>
- <ion-label position="floating">Nombre</ion-label>
- <ion-input [(ngModel)]="productoEditando.nombre"></ion-input>
- </ion-item>
- <ion-item>
- <ion-label position="floating">Precio</ion-label>
- <ion-input type="number" [(ngModel)]="productoEditando.precio"></ioninput>
- </ion-item>
- <ion-item>
- <ion-label position="floating">Stock</ion-label>
- <ion-input type="number" [(ngModel)]="productoEditando.stock"></ion-input>
- </ion-item>
- <ion-button expand="full" (click)="guardarEdicion()">Guardar cambios</ionbutton>
- </ion-card-content>
- </ion-card>
- <!-- Listado -->
- <ion-list>
- <ion-item *ngFor="let p of productos">
- <ion-label>
- <h2>{{ p.nombre }}</h2>
- <p>Precio: ${{ p.precio }} - Stock: {{ p.stock }}</p>
- </ion-label>
- <ion-button fill="clear" color="primary"
-(click)="editarProducto(p)">Editar</ion-button>
- <ion-button fill="clear" color="danger"
-(click)="eliminarProducto(p.id)">Eliminar</ion-button>
- </ion-item>
- </ion-list>
+
+  <!-- Formulario de alta -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Agregar producto</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input [(ngModel)]="nuevoProducto.nombre" placeholder="Ej: Arroz"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Precio</ion-label>
+        <ion-input type="number" [(ngModel)]="nuevoProducto.precio"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Stock</ion-label>
+        <ion-input type="number" [(ngModel)]="nuevoProducto.stock"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" class="ion-margin-top" (click)="agregar()">
+        Enviar
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Listado -->
+  <ion-list>
+    <ion-item lines="full" *ngFor="let p of productos">
+      <ion-label>
+        <h2>{{ p.nombre }}</h2>
+        <p>Precio: {{ p.precio | number:'1.2-2' }} • Stock: {{ p.stock }}</p>
+      </ion-label>
+
+      <ion-button fill="clear" (click)="editar(p)">Editar</ion-button>
+      <ion-button fill="clear" color="danger" (click)="eliminarProducto(p.id)">Borrar</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <!-- Edición -->
+  <ion-card *ngIf="editando">
+    <ion-card-header>
+      <ion-card-title>Editar producto #{{ productoEditando?.id }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input [(ngModel)]="productoEditando.nombre"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Precio</ion-label>
+        <ion-input type="number" [(ngModel)]="productoEditando.precio"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Stock</ion-label>
+        <ion-input type="number" [(ngModel)]="productoEditando.stock"></ion-input>
+      </ion-item>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <ion-button expand="block" (click)="guardarEdicion()">Guardar cambios</ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button expand="block" color="medium" (click)="cancelarEdicion()">Cancelar</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { Auth } from 'src/app/services/auth';
-
+import { AuthService } from 'src/app/services/auth';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -22,7 +21,7 @@ export class LoginPage {
   password: string = '';
   errorMessage = '';
 
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   async login() {
     const { data, error } = await this.auth.login(this.email, this.password);

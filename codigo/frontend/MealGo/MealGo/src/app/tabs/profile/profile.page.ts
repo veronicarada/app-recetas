@@ -1,16 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { Auth } from 'src/app/services/auth';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-profile',
-  template: '', // nada que mostrar
+  template: '',
+  standalone: true,
+  imports: [CommonModule, IonicModule],
 })
 export class ProfilePage implements OnInit {
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   async ngOnInit() {
-    await this.auth.logout();
-    this.router.navigateByUrl('/login');
+    try {
+      await this.auth.logout();
+    } finally {
+      this.router.navigateByUrl('/login', { replaceUrl: true });
+    }
   }
 }
