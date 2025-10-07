@@ -1,0 +1,63 @@
+<ion-header translucent="true">
+  <ion-toolbar color="primary">
+    <ion-title>Recetas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Formulario -->
+  <ion-card class="form-card">
+    <ion-card-header>
+      <ion-card-title>{{ editingId ? 'Editar receta' : 'Nueva receta' }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input [(ngModel)]="form.nombre" placeholder="Ej: Ensalada de quinoa"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Instrucciones</ion-label>
+        <ion-textarea autoGrow rows="3" [(ngModel)]="form.instrucciones"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Tiempo de preparación (min)</ion-label>
+        <ion-input type="number" [(ngModel)]="form.tiempo_preparacion"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Dificultad</ion-label>
+        <ion-segment [(ngModel)]="form.dificultad">
+          <ion-segment-button value="facil"><ion-label>Fácil</ion-label></ion-segment-button>
+          <ion-segment-button value="media"><ion-label>Media</ion-label></ion-segment-button>
+          <ion-segment-button value="dificil"><ion-label>Difícil</ion-label></ion-segment-button>
+        </ion-segment>
+      </ion-item>
+
+      <div class="row">
+        <ion-button expand="block" (click)="save()">
+          {{ editingId ? 'Guardar cambios' : 'Agregar' }}
+        </ion-button>
+        <ion-button fill="clear" (click)="reset()" *ngIf="editingId">Cancelar</ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Listado -->
+  <ion-list *ngIf="!loading">
+    <ion-item class="recipe-row" *ngFor="let r of recetas">
+      <ion-label>
+        <h2>{{ r.nombre }}</h2>
+        <p>⏱ {{ r.tiempo_preparacion }} min · {{ r.dificultad | titlecase }}</p>
+      </ion-label>
+      <ion-button size="small" fill="outline" (click)="openTags(r)">Etiquetas</ion-button>
+      <ion-button size="small" (click)="selectForEdit(r)">Editar</ion-button>
+      <ion-button size="small" color="danger" (click)="confirmDelete(r)">
+        Borrar
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-spinner *ngIf="loading" name="dots" class="center"></ion-spinner>
+</ion-content>
