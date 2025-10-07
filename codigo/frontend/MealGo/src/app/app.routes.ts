@@ -34,6 +34,13 @@ export const routes: Routes = [
         path: 'profile',
         loadComponent: () => import('./tabs/profile/profile.page').then(m => m.ProfilePage)
       },
+
+      // 👇 NUEVA RUTA DE RECETAS
+      {
+        path: 'recetas',
+        loadComponent: () => import('./tabs/recetas/recetas.page').then(m => m.RecetasPage)
+      },
+
       {
         path: '',
         redirectTo: 'home',

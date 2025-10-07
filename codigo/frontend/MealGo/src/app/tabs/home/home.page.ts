@@ -2,52 +2,76 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 
-interface Meal {
-  type: string;
-  icon: string;
-  color: string;
-  consumed: number;
-  target: number;
-}
+type Receta = {
+  id: number;
+  titulo: string;
+  imagen: string;
+  tiempoMin?: number;
+  favorito?: boolean;
+};
+
+type Ingrediente = {
+  id: number;
+  nombre: string;
+  stock?: string; // opcional: ej. '2u', '500g'
+};
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule]
+  imports: [CommonModule, IonicModule],
 })
 export class HomePage {
-  // Datos de ejemplo (luego vendrán de Supabase)
-  totalConsumed = 1291;
-  totalRemaining = 826;
-  totalBurned = 244;
-  dailyTarget = 2117; // meta diaria
+  usuario = 'Juan';
 
-  carbs = { consumed: 206, target: 258 };
-  protein = { consumed: 35, target: 103 };
-  fat = { consumed: 32, target: 68 };
-
-  meals: Meal[] = [
-    { type: 'Desayuno', icon: 'coffee', color: 'warning', consumed: 56, target: 635 },
-    { type: 'Almuerzo', icon: 'dinner', color: 'success', consumed: 856, target: 847 },
-    { type: 'Cena', icon: 'hamburger', color: 'tertiary', consumed: 379, target: 529 },
-    { type: 'Snacks', icon: 'snack', color: 'danger', consumed: 0, target: 106 }
+  // Mock de recetas sugeridas (simulan lo que un día vendrá de Supabase)
+  recetas: Receta[] = [
+    {
+      id: 1,
+      titulo: 'Adelada de',
+      imagen: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=1200&auto=format&fit=crop',
+    },
+    {
+      id: 2,
+      titulo: 'Enchiladas x2',
+      imagen: 'https://images.unsplash.com/photo-1604908176997-4316c682c915?q=80&w=1200&auto=format&fit=crop',
+      tiempoMin: 15,
+      favorito: true,
+    },
+    {
+      id: 3,
+      titulo: 'Ensalada fruti',
+      imagen: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1200&auto=format&fit=crop',
+    },
   ];
 
-  // 🔹 Variables necesarias para el círculo de progreso
-  radius = 70;
-  circumference = 2 * Math.PI * this.radius;
+  ingredientes: Ingrediente[] = [
+    { id: 1, nombre: 'cebolla' },
+    { id: 2, nombre: 'harina' },
+    { id: 3, nombre: 'huevo' },
+  ];
 
-  get progress(): number {
-    return this.totalConsumed / this.dailyTarget;
+  // Gastos semanales mock
+  presupuestoSemana = 1200;     // lo que “tenés”
+  gastadoSemana = 374;          // lo que ya gastaste (mock)
+  get restanteSemana() {
+    return Math.max(this.presupuestoSemana - this.gastadoSemana, 0);
+  }
+  /** Porcentaje gastado 0..1 para el anillo */
+  get pctGastado() {
+    return Math.min(this.gastadoSemana / this.presupuestoSemana, 1);
   }
 
-  get dashOffset(): number {
-    return this.circumference * (1 - this.progress);
+  // Acciones rápidas (hoy sólo navegan a tabs/.. si ya existen)
+  go(section: 'home'|'health'|'capture'|'stats'|'profile'|'plus'|'recetas'|'ingredientes'|'gastos') {
+    // de momento sin router: este stub te deja colgar (click) en el HTML.
+    // Cuando quieras, inyectamos Router y hacemos navigateByUrl('/tabs/...').
+    console.log('Ir a:', section);
   }
 
-  addMeal(type: string) {
-    console.log(`Agregar comida a: ${type}`);
+  toggleFav(receta: Receta) {
+    receta.favorito = !receta.favorito;
   }
 }
