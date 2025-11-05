@@ -1,91 +1,74 @@
-<ion-header translucent="true">
-  <ion-toolbar class="hdr">
-    <ion-title>¡Hola, {{ usuario }}!</ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="clear">
-        <ion-icon name="person-circle" size="large"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+<ion-header>
+  <ion-toolbar class="mg-toolbar">
+    <ion-title>Inicio</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true" class="ion-padding page">
+<ion-content class="mg-bg ion-padding safe-bottom">
 
-  <!-- Accesos rápidos -->
-  <div class="quick-grid">
-    <button class="quick-btn" (click)="go('recetas')">
-      <ion-icon name="checkmark-done-outline"></ion-icon>
-      <span>recetas</span>
-    </button>
+  <h2 class="mg-h2">Bienvenido a <span>MealGo</span> 🍽️</h2>
 
-    <button class="quick-btn" (click)="go('ingredientes')">
-      <ion-icon name="list-outline"></ion-icon>
-      <span>ingredientes</span>
-    </button>
+  <ion-grid fixed class="mg-grid">
+    <ion-row>
+      <ion-col size="6">
+        <!-- 👉 Lleva al tab Plan -->
+        <ion-card class="mg-card" button [routerLink]="['/tabs/plan']" routerDirection="root">
+          <div class="mg-card-icon">
+            <ion-icon name="calendar-clear-outline" aria-hidden="true"></ion-icon>
+          </div>
+          <h3>Plan de comidas</h3>
+          <p>Crea y gestiona tus planes</p>
+        </ion-card>
+      </ion-col>
 
-    <button class="quick-btn" (click)="go('gastos')">
-      <ion-icon name="wallet-outline"></ion-icon>
-      <span>gastos</span>
-    </button>
+      <ion-col size="6">
+        <!-- 👉 Lleva al tab Recetas -->
+        <ion-card class="mg-card" button [routerLink]="['/tabs/recetas']" routerDirection="root">
+          <div class="mg-card-icon">
+            <ion-icon name="restaurant-outline" aria-hidden="true"></ion-icon>
+          </div>
+          <h3>Recetas</h3>
+          <p>Encontrá y añadí recetas</p>
+        </ion-card>
+      </ion-col>
+    </ion-row>
 
-    <button class="quick-btn" (click)="go('plus')">
-      <ion-icon name="sparkles-outline"></ion-icon>
-      <span>plus</span>
-    </button>
-  </div>
+    <ion-row>
+      <ion-col size="6">
+        <!-- 👉 Lleva al tab Despensa -->
+        <ion-card class="mg-card" button [routerLink]="['/tabs/despensa']" routerDirection="root">
+          <div class="mg-card-icon">
+            <ion-icon name="basket-outline" aria-hidden="true"></ion-icon>
+          </div>
+          <h3>Despensa</h3>
+          <p>Administra tus ingredientes</p>
+        </ion-card>
+      </ion-col>
 
-  <!-- Tus recetas sugeridas -->
-  <h2 class="section-title">Tus recetas sugeridas</h2>
-  <div class="cards-scroll">
-    <div class="receta-card" *ngFor="let r of recetas">
-      <div class="receta-img" [style.backgroundImage]="'url('+r.imagen+')'"></div>
-      <div class="receta-body">
-        <div class="receta-title">{{ r.titulo }}</div>
-        <div class="receta-meta" *ngIf="r.tiempoMin">
-          <ion-icon name="time-outline"></ion-icon>
-          <span>{{ r.tiempoMin }} min</span>
-        </div>
-      </div>
-      <button class="fav-btn" [class.on]="r.favorito" (click)="toggleFav(r)">
-        <ion-icon name="heart"></ion-icon>
-      </button>
-    </div>
-  </div>
+      <ion-col size="6">
+        <!-- 👉 Lleva al tab Tips -->
+        <ion-card class="mg-card" button [routerLink]="['/tabs/tips']" routerDirection="root">
+          <div class="mg-card-icon">
+            <ion-icon name="leaf-outline" aria-hidden="true"></ion-icon>
+          </div>
+          <h3>Tips</h3>
+          <p>Consejos alimenticios</p>
+        </ion-card>
+      </ion-col>
+    </ion-row>
 
-  <!-- Ingredientes disponibles -->
-  <div class="ing-row">
-    <h2 class="section-title">Tus ingredientes disponibles</h2>
-    <div class="chips">
-      <ion-chip *ngFor="let i of ingredientes" class="chip">
-        <ion-label>{{ i.nombre }}</ion-label>
-      </ion-chip>
-      <!-- ejemplo “Huevo” destacado a la derecha como en el mock -->
-      <span class="chip-alt">Huevo</span>
-    </div>
-  </div>
+    <ion-row>
+      <ion-col size="12">
+        <!-- 👉 Lleva al tab Usuario (ojo: singular para coincidir con el tab bar) -->
+        <ion-card class="mg-card mg-card-wide" button [routerLink]="['/tabs/usuario']" routerDirection="root">
+          <div class="mg-card-icon">
+            <ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon>
+          </div>
+          <h3>Usuario</h3>
+          <p>Perfil, suscripción y más</p>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-  <!-- Gastos semanales -->
-  <h2 class="section-title">Gastos en alimentación semanal</h2>
-  <div class="gastos-grid">
-    <div class="saldo">
-      <div class="saldo-title">juan tenes</div>
-      <div class="saldo-valor">${{ presupuestoSemana }}</div>
-    </div>
-
-    <div class="donut">
-      <div
-        class="ring"
-        [style.background]="
-          'conic-gradient(var(--mealgo-accent) ' + (pctGastado*360) + 'deg, #ffe8c7 0)'
-        ">
-      </div>
-      <div class="donut-center">
-        <div class="num">${{ restanteSemana }}</div>
-        <div class="lbl">restante</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- bottom spacing -->
-  <div style="height: 24px;"></div>
 </ion-content>
